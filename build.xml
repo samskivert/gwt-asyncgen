@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<project name="gwt-asyncgen" default="compile" basedir=".">
+  <!-- things you may want to change -->
+  <property name="app.name"         value="gwt-asyncgen"/>
+  <property name="doc.packages"     value="com.samskivert.asyncgen.*"/>
+  <property name="doc.overview"     value="com/samskivert/asyncgen/overview.html"/>
+  <property name="copyright.holder" value="Michael Bayne"/>
+
+  <!-- things you probably don't want to change -->
+  <property name="src.dir"     value="src/java"/>
+  <property name="deploy.dir"  value="dist"/>
+  <property name="classes.dir" value="${deploy.dir}/classes"/>
+  <property name="javadoc.dir" value="${deploy.dir}/docs"/>
+  <property name="libs.dir"    value="lib"/>
+
+  <!-- declare our build dependencies -->
+  <fileset dir="${libs.dir}" id="gwt-asyncgen.libs">
+    <include name="ant.jar"/>
+    <include name="gwt-user.jar"/>
+  </fileset>
+
+  <!-- declare our classpath business -->
+  <path id="classpath">
+    <pathelement location="${classes.dir}"/>
+    <fileset dir="${deploy.dir}/lib" includes="*.jar"/>
+  </path>
+
+  <!-- prepares the application directories -->
+  <target name="prepare">
+    <mkdir dir="${deploy.dir}"/>
+    <mkdir dir="${deploy.dir}/lib"/>
+    <mkdir dir="${classes.dir}"/>
+    <mkdir dir="${javadoc.dir}"/>
+    <copy todir="${deploy.dir}/lib" flatten="true">
+      <fileset refid="${app.name}.libs"/>
+    </copy>
+    <copy todir="${classes.dir}" file="lib/gwt-asyncgen.tmpl"/>
+  </target>
+
+  <!-- cleans out the intermediate build files -->
+  <target name="clean">
+    <delete dir="${classes.dir}"/>
+    <delete dir="${deploy.dir}/docs"/>
+    <delete failonerror="false"><fileset dir="${deploy.dir}" includes="*.jar"/></delete>
+  </target>
+
+  <!-- wipes the entire build directory clean -->
+  <target name="distclean">
+    <delete dir="${deploy.dir}"/>
+  </target>
+
+  <!-- build the java class files -->
+  <target name="compile" depends="prepare">
+    <javac srcdir="${src.dir}" destdir="${classes.dir}" includeAntRuntime="false"
+           debug="on" optimize="${build.optimize}" source="1.5" target="1.5" encoding="utf-8">
+      <classpath refid="classpath"/>
+      <compilerarg value="-Xlint"/>
+      <compilerarg value="-Xlint:-serial"/>
+    </javac>
+  </target>
+
+  <!-- build the javadoc documentation -->
+  <target name="javadoc" depends="prepare">
+    <javadoc windowtitle="${app.name} API" doctitle="${app.name} API"
+             overview="${src.dir}/${doc.overview}"
+             destdir="${javadoc.dir}" additionalparam="-breakiterator">
+      <packageset dir="${src.dir}"/>
+      <classpath refid="classpath"/>
+    </javadoc>
+  </target>
+
+  <!-- a target for rebuilding everything -->
+  <target name="all" depends="clean,compile,javadoc,dist"/>
+
+  <!-- builds our distribution files (war and jar) -->
+  <target name="dist" depends="compile">
+    <jar destfile="${deploy.dir}/${app.name}.jar" basedir="${classes.dir}"/>
+  </target>
+</project>

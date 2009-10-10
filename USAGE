@@ -1,0 +1,67 @@
+Running GWT AsyncGen
+--------------------
+
+Generating your FooServiceAsync classes is easy as pie. Just add the following
+to your Ant build.xml file with whatever modifications are appropriate to your
+project:
+
+  <target name="genasync" depends="compile">
+    <taskdef name="genasync" classname="com.samskivert.asyncgen.AsyncGenTask"
+             classpath="WHEREVER/gwt-asyncgen.jar"/>
+    <genasync classpathref="build.classpath">
+      <fileset dir="${src.dir}" includes="**/*Service.java"/>
+    </genasync>
+  </target>
+
+A few things you'll probably want to customize:
+
+1. depends="compile" - this dependency is needed because your FooService
+classes must be compiled at the time that genasync runs as it loads it up and
+reflects on it to figure out what its methods are.
+
+2. classpath="WHEREVER/gwt-asyncgen.jar" - you'll want to set that WHEREVER to
+wherever you put the gwt-asyncget.jar file.
+
+3. genasync classpathref="build.classpath" - you need to provide genasync with
+a reference to a classpath that contains your compiled code and the
+gwt-user.jar library because it's going to need to find both of those classes
+during its reflection process. Anything else referenced by your RemoteService
+interfaces will also need to be in that classpath. If you use the same
+classpath you use to build your code, you should be golden.
+
+Using a custom template
+-----------------------
+
+If you don't like the precise format of the FooServiceAsync files that are
+generated, you can provide a custom template file very easily. Copy
+lib/gwt-asyncgen.tmpl wherever you like, modify it to suite your tastes and
+then simply change your build file to:
+
+    <genasync classpathref="build.classpath" template="WHEREVER/my-awesome.tmpl">
+
+And it will use your template. Naturally you will need to ensure that all of
+the parts of the template are still in place or things won't work.  A bare
+minimum template must contain at least the following:
+
+package @PACKAGE@;
+
+@IMPORTS@
+
+public interface @SERVICE@Async
+{
+@METHOD_START@
+    void @METHOD_NAME@ (@METHOD_ARGS@);
+@METHOD_END@
+}
+
+The text between @METHOD_START@ and @METHOD_END@ is repeated for each interface
+method (and a blank line is placed between each repeat, sorry you can't change
+that).
+
+Everything before @METHOD_START@ is the prefix and is used as-is with the
+tokens replaced.
+
+Everything after @METHOD_END@ is the postfix and is used as-is with the tokens
+replaced as well. The current template doesn't have any tokens there, but if
+you wanted to use @SERVICE@ down there, you could. You could also use @PACKAGE@
+and @IMPORTS@ though I'm not sure why you'd want to do that.

@@ -1,0 +1,19 @@
+//
+// $Id$
+
+package @PACKAGE@;
+
+@IMPORTS@
+
+/**
+ * Provides the asynchronous version of {@link @SERVICE@}.
+ */
+public interface @SERVICE@Async
+{
+@METHOD_START@
+    /**
+     * The async version of {@link @SERVICE@#@METHOD_NAME@}.
+     */
+    void @METHOD_NAME@ (@METHOD_ARGS@);
+@METHOD_END@
+}
