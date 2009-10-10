@@ -74,6 +74,10 @@
 
   <!-- builds our distribution files (war and jar) -->
   <target name="dist" depends="compile">
-    <jar destfile="${deploy.dir}/${app.name}.jar" basedir="${classes.dir}"/>
+    <manifest file="${deploy.dir}/MANIFEST.MF">
+      <attribute name="Main-Class" value="com.samskivert.asyncgen.AsyncGenTool"/>
+    </manifest>
+    <jar destfile="${deploy.dir}/${app.name}.jar" basedir="${classes.dir}"
+         manifest="${deploy.dir}/MANIFEST.MF"/>
   </target>
 </project>
