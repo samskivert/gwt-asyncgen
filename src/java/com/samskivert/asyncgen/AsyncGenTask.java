@@ -144,7 +144,7 @@ public class AsyncGenTask extends Task
 
         File asource = new File(source.getParent(), oclass.getSimpleName() + "Async.java");
         if (source.lastModified() < asource.lastModified()) {
-            System.out.println(oclass.getSimpleName() + " not modified. Skipping.");
+            // System.out.println(oclass.getSimpleName() + " not modified. Skipping.");
             return;
         }
 
