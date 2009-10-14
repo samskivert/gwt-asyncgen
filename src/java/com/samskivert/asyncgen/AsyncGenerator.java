@@ -92,6 +92,7 @@ public abstract class AsyncGenerator
                                "that contains your projects invocation service classes.");
         } catch (Exception e) {
             System.err.println("Failed to process " + source.getName() + ": " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -163,6 +164,7 @@ public abstract class AsyncGenerator
         reduceImports(imports, redimps);
 
         StringBuilder imptext = new StringBuilder();
+        Set<String> done = new HashSet<String>();
         for (Class<?> imp : redimps) {
             if (imp.getPackage().equals(oclass.getPackage())) {
                 continue;
@@ -170,7 +172,16 @@ public abstract class AsyncGenerator
             if (imptext.length() > 0) {
                 imptext.append(LINESEP);
             }
-            imptext.append("import ").append(imp.getName()).append(";");
+            // we need to do some fiddly handling for inner classes
+            String cname = imp.getName();
+            int didx = cname.indexOf("$");
+            if (didx != -1) {
+                cname = cname.substring(0, didx);
+            }
+            if (!done.contains(cname)) {
+                imptext.append("import ").append(cname).append(";");
+                done.add(cname);
+            }
         }
         repls.put("IMPORTS", imptext.toString());
 
@@ -206,6 +217,9 @@ public abstract class AsyncGenerator
 
             if (type instanceof Class<?>) {
                 Class<?> clazz = (Class<?>)type;
+                while (clazz.isArray()) {
+                    clazz = clazz.getComponentType();
+                }
                 if (!clazz.isPrimitive() && !clazz.getName().startsWith("java.lang.")) {
                     redimps.add(clazz);
                 }
