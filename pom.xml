@@ -4,7 +4,7 @@
   <groupId>com.samskivert</groupId>
   <artifactId>gwt-asyncgen</artifactId>
   <packaging>jar</packaging>
-  <version>1.0</version>
+  <version>1.1-SNAPSHOT</version>
   <name>gwt-asyncgen</name>
   <description>A tool for generating GWT RPC async interfaces.</description>
   <url>http://code.google.com/p/gwt-asyncgen/</url>
@@ -35,9 +35,9 @@
   </developers>
 
   <scm>
-    <connection>scm:svn:http://gwt-asyncgen.googlecode.com/svn/tags/gwt-asyncgen-1.0</connection>
-    <developerConnection>scm:svn:https://gwt-asyncgen.googlecode.com/svn/tags/gwt-asyncgen-1.0</developerConnection>
-    <url>http://gwt-asyncgen.googlecode.com/svn/tags/gwt-asyncgen-1.0</url>
+    <connection>scm:svn:http://gwt-asyncgen.googlecode.com/svn/trunk/</connection>
+    <developerConnection>scm:svn:https://gwt-asyncgen.googlecode.com/svn/trunk/</developerConnection>
+    <url>http://gwt-asyncgen.googlecode.com/svn/trunk/</url>
   </scm>
 
   <dependencies>
