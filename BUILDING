@@ -1,16 +1,7 @@
 Building GWT AsyncGen
 ---------------------
 
-If you want to build this library yourself, just do the following:
+The project is built with Maven (http://maven.apache.org/). To build and
+install the library into your local Maven repository, execute:
 
-Place two jar files into the lib/ subdirectory:
-- ant.jar
-- gwt-user.jar
-
-These should be of reasonably modern vintage (Ant 1.7+ and GWT 1.7+).
-
-Then simply run:
-
-% ant dist
-
-and the gwt-asyncgen.jar file will magically appear in the dist/ directory.
+% mvn clean install

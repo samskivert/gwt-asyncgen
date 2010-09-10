@@ -7,7 +7,7 @@ project:
 
   <target name="genasync" depends="compile">
     <taskdef name="genasync" classname="com.samskivert.asyncgen.AsyncGenTask"
-             classpath="WHEREVER/gwt-asyncgen.jar"/>
+             classpath="WHEREVER/gwt-asyncgen-1.0.jar"/>
     <genasync classpathref="build.classpath">
       <fileset dir="${src.dir}" includes="**/*Service.java"/>
     </genasync>
